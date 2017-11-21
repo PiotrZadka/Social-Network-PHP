@@ -4,7 +4,7 @@
 // The main job of this script is to execute a SELECT statement to look for the submitted username and password in the appropriate database table
 // If the submitted username and password is found in the table, then the following session variable is set: $_SESSION["loggedInSkeleton"]=true;
 // All other scripts check for this session variable before loading (if it doesn't exist then the user isn't logged in and the page doesn't load)
-// However... the database table isn't currently being queried (at the moment the code is only checking for a username of "barryg", "mandyb" or "admin") and it's your job to add this query in... 
+// However... the database table isn't currently being queried (at the moment the code is only checking for a username of "barryg", "mandyb" or "admin") and it's your job to add this query in...
 //
 // Other notes:
 // client-side validation using "password","text" inputs and "required","maxlength" attributes (but we can't rely on it happening!)
@@ -28,6 +28,7 @@ $password_val = "";
 $show_signin_form = false;
 // message to output to user:
 $message = "";
+$name = "";
 
 if (isset($_SESSION['loggedInSkeleton']))
 {
@@ -38,48 +39,41 @@ if (isset($_SESSION['loggedInSkeleton']))
 elseif (isset($_POST['username']))
 {
 	// user has just tried to log in:
-	
+
 	// connect directly to our database (notice 4th argument) we need the connection for sanitisation:
 	$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	
+
 	// if the connection fails, we need to know, so allow this exit:
 	if (!$connection)
 	{
 		die("Connection failed: " . $mysqli_connect_error);
-	}	
-	
+	}
+
 	// SANITISATION (see helper.php for the function definition)
-	
+
 	// take copies of the credentials the user submitted and sanitise (clean) them:
 	$username = sanitise($_POST['username'], $connection);
 	$password = sanitise($_POST['password'], $connection);
-	
+
 	// VALIDATION (see helper.php for the function definitions)
-	
+
 	// now validate the data (both strings must be between 1 and 16 characters long):
 	// (reasons: we don't want empty credentials, and we used VARCHAR(16) in the database table)
-	$username_val = validateString($username, 1, 16);
-	$password_val = validateString($password, 1, 16);
-	
+	$username_val = validateString($name, $username, 1, 16);
+	$password_val = validateString($name, $password, 1, 16);
 	// concatenate all the validation results together ($errors will only be empty if ALL the data is valid):
 	$errors = $username_val . $password_val;
-	
+
 	// check that all the validation tests passed before going to the database:
 	if ($errors == "")
 	{
-		
 		// currently only barryg, mandyb, or the admin can sign in... each with ANY password
 		// you need to replace this code with code that checks the username and password against the relevant database table...
-		if ($username == "barryg" || $username == "mandyb" || $username == "admin")
-		{
-			// fake a match with the database table:
-			$n = 1;	
-		}
-		else
-		{
-			$n = 0;
-		}
-			
+		// DONE!
+		$query = "SELECT * FROM members WHERE username='$username' AND password='$password'";
+		$result = mysqli_query($connection, $query);
+		$n = mysqli_num_rows($result);
+
 		// if there was a match then set the session variables and display a success message:
 		if ($n > 0)
 		{
@@ -87,7 +81,7 @@ elseif (isset($_POST['username']))
 			$_SESSION['loggedInSkeleton'] = true;
 			// and copy their username into the session data for use by our other scripts:
 			$_SESSION['username'] = $username;
-			
+
 			// show a successful signin message:
 			$message = "Hi, $username, you have successfully logged in, please <a href='show_profile.php'>click here</a><br>";
 		}
@@ -98,7 +92,7 @@ elseif (isset($_POST['username']))
 			// show an unsuccessful signin message:
 			$message = "Sign in failed, please try again<br>";
 		}
-		
+
 	}
 	else
 	{
@@ -107,7 +101,7 @@ elseif (isset($_POST['username']))
 		// show an unsuccessful signin message:
 		$message = "Sign in failed, please check the errors shown above and try again<br>";
 	}
-	
+
 	// we're finished with the database, close the connection:
 	mysqli_close($connection);
 
@@ -115,7 +109,7 @@ elseif (isset($_POST['username']))
 else
 {
 	// user has arrived at the page for the first time, just show them the form:
-	
+
 	// show signin form:
 	$show_signin_form = true;
 }
@@ -132,7 +126,7 @@ echo <<<_END
   Password: <input type="password" name="password" maxlength="16" value="$password" required> $password_val
   <br>
   <input type="submit" value="Submit">
-</form>	
+</form>
 _END;
 }
 
