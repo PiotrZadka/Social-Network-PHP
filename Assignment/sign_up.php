@@ -51,10 +51,12 @@ elseif (isset($_POST['username']))
 
 	// VALIDATION (see helper.php for the function definitions)
 
+
 	// now validate the data (both strings must be between 1 and 16 characters long):
 	// (reasons: we don't want empty credentials, and we used VARCHAR(16) in the database table)
-	$username_val = validateString($username, 1, 16);
-	$password_val = validateString($password, 1, 16);
+	$username_val = validateSignup("Username",$username);
+	$password_val = validateSignup("Password",$password);
+
 
 	// concatenate all the validation results together ($errors will only be empty if ALL the data is valid):
 	$errors = $username_val . $password_val;
@@ -78,7 +80,7 @@ elseif (isset($_POST['username']))
 			// show the form:
 			$show_signup_form = true;
 			// show an unsuccessful signup message:
-			$message = "Sign up failed, please try again<br>";
+			$message = "Sign up failed, please check errors above";
 		}
 
 	}
@@ -87,7 +89,7 @@ elseif (isset($_POST['username']))
 		// validation failed, show the form again with guidance:
 		$show_signup_form = true;
 		// show an unsuccessful signin message:
-		$message = "Sign up failed, please check the errors shown above and try again<br>";
+		$message = "Sign up failed, please check errors above";
 	}
 
 	// we're finished with the database, close the connection:

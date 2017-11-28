@@ -38,6 +38,23 @@ function validateString($field, $minlength, $maxlength)
     return "";
 }
 
+function validateSignup($name,$field)
+{
+	if(!empty($field))
+	{
+		if(!preg_match('/[\'^£$%&*!()}{@#~?><>,|=_+¬-]/', $field))
+		{
+		// if it's letter/number and not empty than allow
+    return "";
+		}
+		else
+		{
+			return $name." can't contain any special characters!";
+		}
+	}
+	return $name. "can't be empty";
+}
+
 // if the data is valid return an empty string, if the data is invalid return a help message
 function validateProfileString($name, $field, $minlength, $maxlength)
 {
