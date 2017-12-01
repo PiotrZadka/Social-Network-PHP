@@ -1,12 +1,8 @@
 <?php
+// I've added extra validaton because there is no way to make one validation to rule them all!
+// Signup requires different validation than Signin or Profile Update
 
-// Things to notice:
-// This script holds the sanitisation function that we pass all our user data to
-// This script holds the validation functions that double-check our user data is valid
-// You can add new PHP functions to validate different kinds of user data (e.g., emails, dates) by following the same convention:
-// if the data is valid return an empty string, if the data is invalid return a help message
-
-// function to sanitise (clean) user data:
+// Sanitise (clean) user data:
 function sanitise($str, $connection)
 {
 	if (get_magic_quotes_gpc())
@@ -22,6 +18,7 @@ function sanitise($str, $connection)
 	return $str;
 }
 
+// Simple String Validation
 function validateString($field, $minlength, $maxlength)
 {
     if (strlen($field)<$minlength)
@@ -38,24 +35,41 @@ function validateString($field, $minlength, $maxlength)
     return "";
 }
 
+// Validation for signup process
 function validateSignup($name,$field)
 {
-	if(!empty($field))
-	{
-		if(!preg_match('/[\'^£$%&*!()}{@#~?><>,|=_+¬-]/', $field))
+	//validation to check if username already exists in db
+	if($name == "Username"){
+		require "credentials.php";
+		$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+		$query = "SELECT username FROM members WHERE username = '$field' ";
+		$result = mysqli_query($connection, $query);
+		$exists = mysqli_num_rows($result);
+		if($exists == 1)
 		{
-		// if it's letter/number and not empty than allow
-    return "";
-		}
-		else
-		{
-			return $name." can't contain any special characters!";
+			return $field." is not available!";
 		}
 	}
-	return $name. "can't be empty";
+	else
+	{
+		if(!empty($field))
+		{
+			// if username doesn't include non alphanumeric
+			if(!preg_match('/[\'^£$%&*!()}{@#~?><>,|=_+¬-]/', $field))
+			{
+			// if it's letter/number and not empty than allow
+	    return "";
+			}
+			else
+			{
+				return $name." can't contain any special characters!";
+			}
+		}
+		return $name. "can't be empty";
+	}
 }
 
-// if the data is valid return an empty string, if the data is invalid return a help message
+// Validation for String in Profile Setup
 function validateProfileString($name, $field, $minlength, $maxlength)
 {
 	if(!empty($field)){
@@ -82,7 +96,7 @@ function validateProfileString($name, $field, $minlength, $maxlength)
 	return $name . " can't be empty <br>";
 }
 
-// if the data is valid return an empty string, if the data is invalid return a help message
+// Validation for Integers in Profile Setup
 function validateInt($name,$field, $min, $max)
 {
 	// see PHP manual for more info on the options: http://php.net/manual/en/function.filter-var.php
@@ -97,6 +111,7 @@ function validateInt($name,$field, $min, $max)
     return "";
 }
 
+// Validation for Email in Profile Setup
 function validateEmail($field)
 {
 	if (!filter_var($field, FILTER_VALIDATE_EMAIL))
@@ -108,6 +123,7 @@ function validateEmail($field)
     return "";
 }
 
+// Validation for DOB in Profile Setup
 function validateDOB($field){
 	if(empty($field)){
 		return "date is empty";
