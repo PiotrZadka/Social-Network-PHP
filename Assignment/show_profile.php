@@ -14,28 +14,33 @@ if (!isset($_SESSION['loggedInSkeleton']))
 else
 {
 	// user is already logged in, read their username from the session:
-	$username = $_SESSION["username"];
-	
+	if (isset($_GET['username'])) {
+		$username = $_GET['username'];
+	}
+	else{
+		$username = $_SESSION["username"];
+	}
+
 	// now read their profile data from the table...
-	
+
 	// connect directly to our database (notice 4th argument):
 	$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-	
+
 	// if the connection fails, we need to know, so allow this exit:
 	if (!$connection)
 	{
 		die("Connection failed: " . $mysqli_connect_error);
 	}
-	
+
 	// check for a row in our profiles table with a matching username:
 	$query = "SELECT * FROM profiles WHERE username='$username'";
-	
+
 	// this query can return data ($result is an identifier):
 	$result = mysqli_query($connection, $query);
-	
+
 	// how many rows came back? (can only be 1 or 0 because username is the primary key in our table):
 	$n = mysqli_num_rows($result);
-		
+
 	// if there was a match then extract their profile data:
 	if ($n > 0)
 	{
@@ -53,10 +58,10 @@ else
 		// no match found, prompt user to set up their profile:
 		echo "You still need to set up a profile!<br>";
 	}
-	
+
 	// we're finished with the database, close the connection:
 	mysqli_close($connection);
-		
+
 }
 
 // finish off the HTML for this page:

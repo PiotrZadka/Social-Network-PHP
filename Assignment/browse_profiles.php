@@ -13,7 +13,39 @@ if (!isset($_SESSION['loggedInSkeleton']))
 }
 else
 {
-	echo "Implement profile browsing here... See the assignment specification for more details.<br>";
+	$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+
+	if (!$connection)
+	{
+		die("Connection failed: " . $mysqli_connect_error);
+	}
+	$username = $_SESSION["username"];
+	$query = "SELECT username, firstname, lastname FROM profiles WHERE username NOT LIKE '$username' ORDER BY lastname ASC";
+	$result = mysqli_query($connection, $query);
+
+	$n = mysqli_num_rows($result);
+	if ($n > 0)
+	{
+		echo "<ul>";
+		for ($i=0; $i<$n; $i++)
+		{
+			// fetch one row as an associative array (elements named after columns):
+			$row = mysqli_fetch_assoc($result);
+			$firstname = $row['firstname'];
+			$lastname = $row['lastname'];
+			$hyperusername = $row['username'];
+
+			echo "<li><a href='/assignment/show_profile.php?username=$hyperusername'>$firstname $lastname </li>";
+		}
+		echo "</ul>";
+}
+else
+{
+	echo "NO PROFILES FOUND! CHECK DB CONNECTION";
+}
+
+// we're finished with the database, close the connection:
+mysqli_close($connection);
 }
 
 // finish off the HTML for this page:
