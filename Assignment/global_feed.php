@@ -6,6 +6,7 @@
 
 // execute the header script:
 require_once "header.php";
+$user_message = '';
 
 if (!isset($_SESSION['loggedInSkeleton']))
 {
@@ -14,14 +15,46 @@ if (!isset($_SESSION['loggedInSkeleton']))
 }
 else
 {
-	echo "Implement the global feed here... ";
+	if(isset($_POST['userpost']))
+	{
+
+		//Put code here!!
+		$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+		if (!$connection)
+		{
+			die("Connection failed: " . $mysqli_connect_error);
+		}
+		$timestamp = date('Y/m/d H:i:s');
+		$username = $_SESSION['username'];
+		$content = sanitise($_POST['userpost'], $connection);
+		$query = "INSERT INTO feed (post_id, username,content,timestamp) VALUES ('', '$username','$content','$timestamp');";
+		$result = mysqli_query($connection, $query);
+		if ($result)
+		{
+			// show a successful signup message:
+			$user_message = "Message posted!";
+		}
+		else
+		{
+			// show unsuccessfull message
+			$user_message = "Message failed to post";
+		}
+
+	}
 	// a little extra text that only the admin will see!:
 	if ($_SESSION['username'] == "admin")
 	{
-		echo "[admin sees more!]<br>";
+
 	}
-	echo "See the assignment specification for more details.<br>";
 }
+echo <<<_END
+      <form method='post' method='post'>
+      Type here to post a message:<br>
+      <textarea name='userpost' cols='50' rows='5'></textarea><br>
+      <input type='submit' value='Post Message'></form><br>
+			echo $user_message;
+_END;
+
 
 // finish off the HTML for this page:
 require_once "footer.php";

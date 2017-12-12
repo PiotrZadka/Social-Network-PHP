@@ -201,7 +201,7 @@ _END;
 }
 
 // display our message to the user:
-echo $message;
+echo $usermessage;
 
 // finish of the HTML for this page:
 require_once "footer.php";

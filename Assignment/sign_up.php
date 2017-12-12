@@ -116,6 +116,7 @@ echo <<<_END
   <br>
   <input type="submit" value="Submit">
 </form>
+echo $message
 _END;
 }
 
