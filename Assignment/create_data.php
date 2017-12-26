@@ -2,10 +2,10 @@
 
 // Things to notice:
 // This file is the first one we will run when we mark your submission
-// Its job is to: 
-// Create your database (currently called "skeleton", see credentials.php)... 
-// Create all the tables you will need inside your database (currently it makes "members" and "profiles" tables, you will probably need more)... 
-// Create suitable test data for each of those tables 
+// Its job is to:
+// Create your database (currently called "skeleton", see credentials.php)...
+// Create all the tables you will need inside your database (currently it makes "members" and "profiles" tables, you will probably need more)...
+// Create suitable test data for each of those tables
 // NOTE: this last one is VERY IMPORTANT - you need to include test data that enables the markers to test all of your site's functionality
 
 // read in the details of our MySQL server:
@@ -21,15 +21,15 @@ if (!$connection)
 {
 	die("Connection failed: " . $mysqli_connect_error);
 }
-  
+
 // build a statement to create a new database:
 $sql = "CREATE DATABASE IF NOT EXISTS " . $dbname;
 
 // no data returned, we just test for true(success)/false(failure):
-if (mysqli_query($connection, $sql)) 
+if (mysqli_query($connection, $sql))
 {
 	echo "Database created successfully, or already exists<br>";
-} 
+}
 else
 {
 	die("Error creating database: " . mysqli_error($connection));
@@ -46,12 +46,12 @@ mysqli_select_db($connection, $dbname);
 $sql = "DROP TABLE IF EXISTS members";
 
 // no data returned, we just test for true(success)/false(failure):
-if (mysqli_query($connection, $sql)) 
+if (mysqli_query($connection, $sql))
 {
 	echo "Dropped existing table: members<br>";
-} 
-else 
-{	
+}
+else
+{
 	die("Error checking for existing table: " . mysqli_error($connection));
 }
 
@@ -59,16 +59,17 @@ else
 $sql = "CREATE TABLE members (username VARCHAR(16), password VARCHAR(16), PRIMARY KEY(username))";
 
 // no data returned, we just test for true(success)/false(failure):
-if (mysqli_query($connection, $sql)) 
+if (mysqli_query($connection, $sql))
 {
 	echo "Table created successfully: members<br>";
 }
-else 
+else
 {
 	die("Error creating table: " . mysqli_error($connection));
 }
 
 // put some data in our table:
+$usernames[] = 'admin'; $passwords[] = 'admin';
 $usernames[] = 'barryg'; $passwords[] = 'letmein';
 $usernames[] = 'mandyb'; $passwords[] = 'abc123';
 $usernames[] = 'mathman'; $passwords[] = 'secret95';
@@ -82,16 +83,53 @@ $usernames[] = 'd'; $passwords[] = 'test';
 for ($i=0; $i<count($usernames); $i++)
 {
 	$sql = "INSERT INTO members (username, password) VALUES ('$usernames[$i]', '$passwords[$i]')";
-	
+
 	// no data returned, we just test for true(success)/false(failure):
-	if (mysqli_query($connection, $sql)) 
+	if (mysqli_query($connection, $sql))
 	{
 		echo "row inserted<br>";
 	}
-	else 
+	else
 	{
 		die("Error inserting row: " . mysqli_error($connection));
 	}
+}
+////////////////////////////////////////////
+////////////// POSTS TABLE //////////////
+////////////////////////////////////////////
+
+// if there's an old version of our table, then drop it:
+$sql = "DROP TABLE IF EXISTS posts";
+
+// no data returned, we just test for true(success)/false(failure):
+if (mysqli_query($connection, $sql))
+{
+	echo "Dropped existing table: posts<br>";
+}
+else
+{
+	die("Error checking for existing table: " . mysqli_error($connection));
+}
+
+// make our table:
+$sql = "CREATE TABLE posts (
+ post_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+ username varchar(16) NOT NULL,
+ content varchar(140) NOT NULL,
+ timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ likes bigint(20) NOT NULL DEFAULT '0',
+ PRIMARY KEY (post_id),
+ UNIQUE KEY post_id (post_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1";
+
+// no data returned, we just test for true(success)/false(failure):
+if (mysqli_query($connection, $sql))
+{
+	echo "Table created successfully: members<br>";
+}
+else
+{
+	die("Error creating table: " . mysqli_error($connection));
 }
 
 ////////////////////////////////////////////
@@ -105,9 +143,9 @@ $sql = "DROP TABLE IF EXISTS profiles";
 if (mysqli_query($connection, $sql))
 {
 	echo "Dropped existing table: profiles<br>";
-} 
-else 
-{	
+}
+else
+{
 	die("Error checking for existing table: " . mysqli_error($connection));
 }
 
@@ -115,11 +153,11 @@ else
 $sql = "CREATE TABLE profiles (username VARCHAR(16), firstname VARCHAR(40), lastname VARCHAR(50), pets TINYINT, email VARCHAR(50), dob DATE, PRIMARY KEY (username))";
 
 // no data returned, we just test for true(success)/false(failure):
-if (mysqli_query($connection, $sql)) 
+if (mysqli_query($connection, $sql))
 {
 	echo "Table created successfully: profiles<br>";
 }
-else 
+else
 {
 	die("Error creating table: " . mysqli_error($connection));
 }
@@ -133,13 +171,13 @@ $usernames[] = 'mandyb'; $firstnames[] = 'Mandy'; $lastnames[] = 'Brent'; $pets[
 for ($i=0; $i<count($usernames); $i++)
 {
 	$sql = "INSERT INTO profiles (username, firstname, lastname, pets, email, dob) VALUES ('$usernames[$i]', '$firstnames[$i]', '$lastnames[$i]', $pets[$i], '$emails[$i]', '$dobs[$i]')";
-	
+
 	// no data returned, we just test for true(success)/false(failure):
-	if (mysqli_query($connection, $sql)) 
+	if (mysqli_query($connection, $sql))
 	{
 		echo "row inserted<br>";
 	}
-	else 
+	else
 	{
 		die("Error inserting row: " . mysqli_error($connection));
 	}

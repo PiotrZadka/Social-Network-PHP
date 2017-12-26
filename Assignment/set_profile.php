@@ -27,7 +27,7 @@ $dob_val = "";
 // should we show the set profile form?:
 $show_profile_form = false;
 // message to output to user:
-$message = "";
+$usermessage = "";
 
 if (!isset($_SESSION['loggedInSkeleton']))
 {

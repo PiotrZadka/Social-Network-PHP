@@ -8,4 +8,5 @@ echo "This is the skeleton code for 2CWK50. See the assignment specification for
 // finish of the HTML for this page:
 require_once "footer.php";
 
+
 ?>
