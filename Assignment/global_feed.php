@@ -7,6 +7,7 @@
 // execute the header script:
 require_once "header.php";
 $user_message = '';
+$likes_number = '';
 
 if (!isset($_SESSION['loggedInSkeleton']))
 {
@@ -15,6 +16,21 @@ if (!isset($_SESSION['loggedInSkeleton']))
 }
 else
 {
+
+	$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+	if (!$connection)
+	{
+		die("Connection failed: " . $mysqli_connect_error);
+	}
+	//check if user is muted before alowing to post
+	$username = $_SESSION['username'];
+	$query_muted = "SELECT muted FROM members WHERE username = '$username'";
+	$muted_result = mysqli_query($connection,$query_muted);
+	$muted_row = mysqli_fetch_assoc($muted_result);
+	$muted_value = $muted_row['muted'];
+	//checking in table if value is 0 - Unmutted
+	if($muted_value == 0)
+	{
 	//POSTING MESSAGES
 	if(isset($_POST['userpost']))
 	{
@@ -39,20 +55,85 @@ else
 			$user_message = "Message failed to post";
 		}
 	}
-	// a little extra text that only the admin will see!:
+	// LIKING POSTS
+	if(isset($_POST['like']))
+	{
+		$like_id = $_POST['like_id'];
+		$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+		if (!$connection)
+		{
+			die("Connection failed: " . $mysqli_connect_error);
+		}
+		$like_query = "UPDATE posts SET likes=likes+1 WHERE post_id='$like_id'";
+		$like_result = mysqli_query($connection, $like_query);
+	}
+}
+// Otherwise disable posting messages
+else{
+	$user_message = "You are muted!";
+}
+	// Handling muting users
 	if ($_SESSION['username'] == "admin")
 	{
+		if(isset($_POST['mute']))
+		{
+			$muted_user = $_POST['mute_username'];
+			$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+			if (!$connection)
+			{
+				die("Connection failed: " . $mysqli_connect_error);
+			}
+			//update mute status of user in db
+			$mute_query = "UPDATE members SET muted='1' WHERE username='$muted_user'";
+			mysqli_query($connection, $mute_query);
+			$user_message = "User $muted_user is now MUTED!";
+		}
+		elseif(isset($_POST['unmute']))
+		{
+			$unmuted_user = $_POST['unmute_username'];
+			$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+			if (!$connection)
+			{
+				die("Connection failed: " . $mysqli_connect_error);
+			}
+			//update unmute status of user in db
+			$unmute_query = "UPDATE members SET muted='0' WHERE username='$unmuted_user'";
+			mysqli_query($connection, $unmute_query);
+			$user_message = "User $unmuted_user is now unMUTED!";
+		}
+
+		// list muted users
+		$list_muted = "SELECT username FROM members WHERE muted = 1";
+		$list_muted_result = mysqli_query($connection, $list_muted);
+		$list_muted_n = mysqli_num_rows($list_muted_result);
+		if ($list_muted_n > 0)
+		{
+			echo "<div id='muted_list'>";
+			echo "<p id='muted_title'>Muted users:</p>";
+			for ($i=0; $i<$list_muted_n; $i++)
+			{
+				$list_muted_row = mysqli_fetch_assoc($list_muted_result);
+				$list_muted_username = $list_muted_row['username'];
+				echo "<p id='muted_username'>$list_muted_username</p>";
+				// Button next to muted user
+				echo "<form method='POST' action=''>";
+				echo "<input type='hidden' name='unmute_username' value='$list_muted_username'>";
+				echo "<input id='unmute' type='submit' name='unmute' value='unMute'></button>";
+				echo "</form>";
+			}
+			echo "</div>";
+		}
 
 	}
 }
 echo <<<_END
-      <form id='post-form' method='post' method='post'>
-      Type here to post a message:<br>
-      <textarea name='userpost' cols='50' rows='5' maxlength='140'></textarea><br>
-      <input id='submit-button' type='submit' value='Post Message'></form>
+      <form id='post-form' method='post'>
+      <textarea name='userpost' style='resize:none' cols='50' rows='5' maxlength='140' none placeholder='Type here to post a message...' required></textarea><br>
+      <input id='submit-button' type='submit' value='Post Message'>
+			</form>
 _END;
 
-echo $user_message;
+echo "<p style='margin-left: 5px; color: red; font-weight: bold;'>".$user_message."</p>";
 
 // RETRIEVE ALL POSTS
 $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
@@ -85,13 +166,33 @@ if ($ret_n > 0)
 		}
 		echo "<p id='timestamp'>$post_timestamp</p><br>";
 		echo "<p id='content'>$post_content</p>";
-		//echo "<p id='likes'>$post_likes</p>";
 
+		// like button
+		echo "<form method='POST' action=''>";
+		echo "<input type='hidden' name='like_id' value='$post_id'>";
+
+		// Display current likes
+		$check_like_query ="SELECT likes FROM posts WHERE post_id ='$post_id'";
+		$check_like_result = mysqli_query($connection, $check_like_query);
+		$like_row = mysqli_fetch_assoc($check_like_result);
+		$likes_number = $like_row['likes'];
+
+		echo "<input id='like' type='submit' name='like' value='$likes_number Like this!'></button>";
+		echo "</form>";
+
+		//show mute button if logged in as admin
+		if ($_SESSION['username'] == "admin")
+		{
+			echo "<form method='POST' action=''>";
+			echo "<input type='hidden' name='mute_username' value='$post_username'>";
+			echo "<input id='mute' type='submit' name='mute' value='Mute'></button>";
+			echo "</form>";
+		}
 		echo "</div>";
-
 	}
 	echo "</div>";
 }
+
 
 require_once "footer.php";
 ?>

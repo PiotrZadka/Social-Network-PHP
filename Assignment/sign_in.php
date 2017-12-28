@@ -121,11 +121,11 @@ if ($show_signin_form)
 echo <<<_END
 <form action="sign_in.php" method="post">
   Please enter your username and password:<br>
-  Username: <input type="text" name="username" maxlength="16" value="$username" required> $username_val
+  Username: <input type="text" id='cred_user' name="username" maxlength="16" value="$username" required> $username_val
   <br>
-  Password: <input type="password" name="password" maxlength="16" value="$password" required> $password_val
+  Password: <input type="text" id='cred_pass' name="password" maxlength="16" value="$password" required> $password_val
   <br>
-  <input type="submit" value="Submit">
+  <input type="submit" id='submit_button' value="Log In">
 </form>
 _END;
 }

@@ -56,7 +56,7 @@ else
 }
 
 // make our table:
-$sql = "CREATE TABLE members (username VARCHAR(16), password VARCHAR(16), PRIMARY KEY(username))";
+$sql = "CREATE TABLE members (username VARCHAR(16), password VARCHAR(16), muted TINYINT(1) NOT NULL DEFAULT '0', PRIMARY KEY(username))";
 
 // no data returned, we just test for true(success)/false(failure):
 if (mysqli_query($connection, $sql))
@@ -116,7 +116,7 @@ $sql = "CREATE TABLE posts (
  post_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
  username varchar(16) NOT NULL,
  content varchar(140) NOT NULL,
- timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
  likes bigint(20) NOT NULL DEFAULT '0',
  PRIMARY KEY (post_id),
  UNIQUE KEY post_id (post_id)
