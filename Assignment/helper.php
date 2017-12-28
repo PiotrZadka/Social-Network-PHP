@@ -117,17 +117,20 @@ function validateEmail($field)
 	if (!filter_var($field, FILTER_VALIDATE_EMAIL))
     {
 		// wasn't a valid email, return a help message:
-        return "Not a valid email address";
+        return "Not a valid email address<br>";
     }
 	// data was valid, return an empty string:
     return "";
 }
 
 // Validation for DOB in Profile Setup
-function validateDOB($field){
-	if(empty($field)){
-		return "date is empty";
+function validateDOB($field)
+{
+	if(empty($field))
+	{
+		return "Date is empty";
 	}
+	return "";
 }
 
 // all other validation functions should follow the same rule:

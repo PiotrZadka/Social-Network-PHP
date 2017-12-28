@@ -27,7 +27,7 @@ $dob_val = "";
 // should we show the set profile form?:
 $show_profile_form = false;
 // message to output to user:
-$usermessage = "";
+$message = "";
 
 if (!isset($_SESSION['loggedInSkeleton']))
 {
@@ -65,7 +65,7 @@ elseif (isset($_POST['firstname']))
 
 	$firstname_val = validateProfileString($fname,$firstname, 1, 16);
 	$lastname_val = validateProfileString($lname,$lastname, 1, 16);
-	$pets_val = validateInt($pname,$pets, 0, 4);
+	$pets_val = validateInt($pname,$pets, 0, 5);
 	$email_val = validateEmail($email);
 	$dob_val = validateDOB($dob);
 	$errors = $firstname_val . $lastname_val . $pets_val . $email_val . $dob_val;
@@ -201,7 +201,7 @@ _END;
 }
 
 // display our message to the user:
-echo $usermessage;
+echo "<p style='color:red;'><b>".$message."</b></p>";
 
 // finish of the HTML for this page:
 require_once "footer.php";
