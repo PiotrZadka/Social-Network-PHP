@@ -25,6 +25,8 @@ echo <<<_END
 <html>
 <head>
 	 <link rel="stylesheet" href="styles.css">
+	 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	 <script src="libraries.js"></script>
 </head>
 <body>
 

@@ -171,3 +171,36 @@ body{
 #submit_button:hover{
 	background: #b3b5b7;
 }
+
+/*Libraries Tab Styling*/
+#afterglow_list {
+	list-style: disc outside none;
+	display: list-item;
+	margin-left: 20px;
+}
+#libraries_list{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#libraries_list li{
+	display: inline-block;
+	background-color: #f2f2f2;
+	padding: 5px;
+	border: 1px solid;
+	cursor: pointer;
+}
+#libraries_list li:hover{
+	background: #b3b5b7;
+}
+
+article h2{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+}
+#code_format{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}

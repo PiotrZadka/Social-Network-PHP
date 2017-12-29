@@ -1,0 +1,45 @@
+<article id="afterglow">
+	<img src="img/afterglow.png" alt="Afterglow Video Example" height="300" width="500"></img>
+	<section>
+		<h2>Afterglow</h2>
+		<p>Website:<a href="http://afterglowplayer.com/">http://afterglowplayer.com/</a></p>
+		<p>GitHub:<a href="https://github.com/moay/afterglow">https://github.com/moay/afterglow</a></p>
+		<p>Afterglow is a tool to create fully responsive and totally awesome video players from HTML5 video elements with as little effort as possible.</p>
+		<p>It’s super simple to use and comes loaded with features.</p>
+		<p>Key features:</p>
+		<ul id="afterglow_list">
+		  <li>Easy to use and user friendly,</li>
+		  <li>Can support video format such as vimeo, youtube or local files</li>
+		  <li>Works with all major browsers and devices</li>
+			<li>Fully responsive,</li>
+			<li>Supports CDN</li>
+			<li>Has a community forum,</li>
+			<li>Possible to contribute on GitHub and frequently updated</li>
+			<li>Documentation fully explained and hands on examples</li>
+			<li>Relies on popular scripts such as video.js</li>
+			<li>Free!</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>How to use:</h2>
+		<p>Guide: <a href="http://afterglowplayer.com/wizard">http://afterglowplayer.com/wizard</a></p>
+		<p>Afterglow website contains a simple wizard feature that generates specific code for what kind of video format we would like to use on our website.</p>
+		<p>Therefore, example of YouTube links:</p>
+
+		<code>
+		<p id="code_format">
+			<span>&lt;script type="text/javascript" src="//cdn.jsdelivr.net/npm/afterglowplayer@1.x"&gt;&lt;/script&gt;
+			</span><br>
+			<span>&lt;video class="afterglow" id="my-video" width="500" height="300" <b>data-youtube-id</b>="https://www.youtube.com/watch?v=G3Fc_eOkM8M&amp;t=0s"&gt;&lt;/video&gt;
+			</span>
+		</p>
+		</code>
+
+		<p>This parameter<b>"data-youtube-id"</b> can be later targeted in our global feed to store any link from the user input and stored later in our database in any format to later retrieve and displayed in video player.</p>
+		<p><b>Data-youtube-id</b> can also handle short ID such as <b>“G3Fc_eOkM8M&t”</b> instead of full link.</p><br>
+
+		<p>User can post a link in the global feed and from there we can decide if we store full link or just the ID of the video link in our database.</p>
+		<p>Once stored we can retrieve it back to our global feed and show the user his link well presented in Afterglow Video Player.</p>
+	</section>
+</article>

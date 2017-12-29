@@ -5,7 +5,6 @@
 
 // execute the header script:
 require_once "header.php";
-
 if (!isset($_SESSION['loggedInSkeleton']))
 {
 	// user isn't logged in, display a message saying they must be:
