@@ -63,20 +63,22 @@ elseif (isset($_POST['username']))
 	$password_val = validateString($name, $password, 1, 16);
 	// concatenate all the validation results together ($errors will only be empty if ALL the data is valid):
 	$errors = $username_val . $password_val;
-
 	// check that all the validation tests passed before going to the database:
 	if ($errors == "")
 	{
 		// currently only barryg, mandyb, or the admin can sign in... each with ANY password
 		// you need to replace this code with code that checks the username and password against the relevant database table...
 		// DONE!
-		$query = "SELECT * FROM members WHERE username='$username' AND password='$password'";
+		$query = "SELECT * FROM members WHERE username='$username'";
 		$result = mysqli_query($connection, $query);
 		$n = mysqli_num_rows($result);
-
 		// if there was a match then set the session variables and display a success message:
 		if ($n > 0)
 		{
+			$row = mysqli_fetch_assoc($result);
+			$isCorrect = password_verify($password, $row['password']);
+			if($isCorrect)
+			{
 			// set a session variable to record that this user has successfully logged in:
 			$_SESSION['loggedInSkeleton'] = true;
 			// and copy their username into the session data for use by our other scripts:
@@ -84,13 +86,19 @@ elseif (isset($_POST['username']))
 
 			// show a successful signin message:
 			$message = "Hi, $username, you have successfully logged in, please <a href='show_profile.php'>click here</a><br>";
+			}
+			else
+			{
+				$message = "Wrong password";
+			}
+
 		}
 		else
 		{
 			// no matching credentials found so redisplay the signin form with a failure message:
 			$show_signin_form = true;
 			// show an unsuccessful signin message:
-			$message = "Sign in failed, please try again<br>";
+			$message = "Username doesn't exists!<br>";
 		}
 
 	}

@@ -56,7 +56,7 @@ else
 }
 
 // make our table:
-$sql = "CREATE TABLE members (username VARCHAR(16), password VARCHAR(16), muted TINYINT(1) NOT NULL DEFAULT '0', PRIMARY KEY(username))";
+$sql = "CREATE TABLE members (username VARCHAR(16), password VARCHAR(255), muted TINYINT(1) NOT NULL DEFAULT '0', PRIMARY KEY(username))";
 
 // no data returned, we just test for true(success)/false(failure):
 if (mysqli_query($connection, $sql))
@@ -82,7 +82,8 @@ $usernames[] = 'd'; $passwords[] = 'test';
 // loop through the arrays above and add rows to the table:
 for ($i=0; $i<count($usernames); $i++)
 {
-	$sql = "INSERT INTO members (username, password) VALUES ('$usernames[$i]', '$passwords[$i]')";
+	$hashPassword = password_hash($passwords[$i],PASSWORD_DEFAULT);
+	$sql = "INSERT INTO members (username, password) VALUES ('$usernames[$i]', '$hashPassword')";
 
 	// no data returned, we just test for true(success)/false(failure):
 	if (mysqli_query($connection, $sql))

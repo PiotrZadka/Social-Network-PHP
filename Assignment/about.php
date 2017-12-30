@@ -16,9 +16,7 @@ written recommendations for the best way to incorporate new future functionality
 echo "Skeleton code was provided by course tutor.<br>";
 echo "All styling, content and functionality was created by Piotr Zadka (14056838)<br>";
 
-
 // finish of the HTML for this page:
 require_once "footer.php";
-
 
 ?>

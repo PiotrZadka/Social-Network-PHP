@@ -54,7 +54,8 @@ elseif (isset($_POST['username']))
 	$username_val = validateSignup("Username",$username);
 	$password_val = validateSignup("Password",$password);
 
-
+	//Crypting password
+	$hashPassword = password_hash($password,PASSWORD_DEFAULT);
 	// concatenate all the validation results together ($errors will only be empty if ALL the data is valid):
 	$errors = $username_val . $password_val;
 
@@ -63,7 +64,7 @@ elseif (isset($_POST['username']))
 	{
 
 		// try to insert the new details:
-		$query = "INSERT INTO members (username, password) VALUES ('$username', '$password');";
+		$query = "INSERT INTO members (username, password) VALUES ('$username', '$hashPassword');";
 		$result = mysqli_query($connection, $query);
 
 		// no data returned, we just test for true(success)/false(failure):
