@@ -48,10 +48,7 @@ elseif (isset($_POST['username']))
 	// take copies of the credentials the user submitted, and sanitise (clean) them:
 	$username = sanitise($_POST['username'], $connection);
 	$password = sanitise($_POST['password'], $connection);
-
 	// VALIDATION (see helper.php for the function definitions)
-
-
 	// now validate the data (both strings must be between 1 and 16 characters long):
 	// (reasons: we don't want empty credentials, and we used VARCHAR(16) in the database table)
 	$username_val = validateSignup("Username",$username);

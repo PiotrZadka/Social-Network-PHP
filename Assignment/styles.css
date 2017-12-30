@@ -173,11 +173,13 @@ body{
 }
 
 /*Libraries Tab Styling*/
-#afterglow_list {
+#afterglow_list, #plyr_list, #videojs_list{
 	list-style: disc outside none;
 	display: list-item;
 	margin-left: 20px;
+	margin-top: 5px;
 }
+
 #libraries_list{
 	margin-top: 5px;
 	margin-bottom: 5px;
