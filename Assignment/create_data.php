@@ -133,6 +133,28 @@ else
 	die("Error creating table: " . mysqli_error($connection));
 }
 
+// put some data in our table:
+$post_id = array();
+$post_id[] = '1'; $username[] = 'admin'; $content[] = 'hello! Im Admin of this site.'; $timestamp[] = 'date("2017-12-31 21:01:50")'; $likes[] = 3;
+$post_id[] = '2'; $username[] = 'barryg'; $content[] = 'Hi Admin! Im Barry'; $timestamp[] = 'date("2017-12-31 21:02:07")'; $likes[] = 1;
+$post_id[] = '3'; $username[] = 'admin'; $content[] = 'I can mute people!'; $timestamp[] = 'date("2017-12-31 21:02:33")'; $likes[] = 0;
+
+// loop through the arrays above and add rows to the table:
+for ($i=0; $i<count($post_id); $i++)
+{
+	$sql = "INSERT INTO posts (post_id, username, content, timestamp, likes) VALUES ('$post_id[$i]', '$username[$i]', '$content[$i]', $timestamp[$i], '$likes[$i]')";
+
+	// no data returned, we just test for true(success)/false(failure):
+	if (mysqli_query($connection, $sql))
+	{
+		echo "row inserted<br>";
+	}
+	else
+	{
+		die("Error inserting row: " . mysqli_error($connection));
+	}
+}
+
 ////////////////////////////////////////////
 ////////////// PROFILES TABLE //////////////
 ////////////////////////////////////////////
