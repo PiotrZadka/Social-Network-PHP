@@ -1,7 +1,6 @@
-#Piotr Zadka 2CWK50: A Social Network Documentation
+## Piotr Zadka 2CWK50: A Social Network Documentation
 
 ## Setup
-
 To create database, visit **/create_data.php**. This pages will create the `skeleton` database and corresponding tables. For further access to the database and it's contents, visit **/phpmyadmin**.
 
 ## Sign in
