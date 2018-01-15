@@ -34,6 +34,11 @@ User can setup a new profile by visiting **/set_profile.php** if he/she haven't 
 **Number of pets** is validated by ensuring that the input contains **only numeric values**, and **is within range of 0-5**.  
 **Email** is validated by ensuring that the provided email address is valid using `FILTER_VALIDATE_EMAIL` filter.  
 **Date of birth** is validated by checking if its in correct format **YYYY-MM-DD**.  
-Profile information can be updated anytime.  
+Profile information can be updated anytime. 
+
+## View All Profiles
+To view all set-up profiles, visit **/browse_profiles.php**. Click on a chosen username to view his/her profile. Only users with **set-up profiles** are visible. Back-end checks which user was clicked and generates new hyper-link that passes URL parameters to **/show_profile.php**.
+
+
 
 
