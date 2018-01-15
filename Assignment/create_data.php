@@ -156,6 +156,44 @@ for ($i=0; $i<count($post_id); $i++)
 }
 
 ////////////////////////////////////////////
+////////////// PRIVATE MESSAGES TABLE //////////////
+////////////////////////////////////////////
+
+// if there's an old version of our table, then drop it:
+$sql = "DROP TABLE IF EXISTS privateMessages";
+
+// no data returned, we just test for true(success)/false(failure):
+if (mysqli_query($connection, $sql))
+{
+	echo "Dropped existing table: privateMessages<br>";
+}
+else
+{
+	die("Error checking for existing table: " . mysqli_error($connection));
+}
+
+// make our table:
+$sql = "CREATE TABLE privateMessages (
+ pm_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+ username varchar(16) NOT NULL,
+ pmUsername varchar(16) NOT NULL,
+ content varchar(140) NOT NULL,
+ timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY (pm_id),
+ UNIQUE KEY post_id (pm_id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1";
+
+// no data returned, we just test for true(success)/false(failure):
+if (mysqli_query($connection, $sql))
+{
+	echo "Table created successfully: members<br>";
+}
+else
+{
+	die("Error creating table: " . mysqli_error($connection));
+}
+
+////////////////////////////////////////////
 ////////////// PROFILES TABLE //////////////
 ////////////////////////////////////////////
 

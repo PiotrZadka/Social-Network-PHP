@@ -31,30 +31,63 @@ else
 	//checking in table if value is 0 - Unmutted
 	if($muted_value == 0)
 	{
-	//POSTING MESSAGES
-	if(isset($_POST['userpost']))
-	{
-		$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-		if (!$connection)
+		// PRIVATE MESSAGES
+		//checking for checkbox[PM?]
+		if (isset($_POST['checkPM']))
 		{
-			die("Connection failed: " . $mysqli_connect_error);
-		}
-		$timestamp = date('Y/m/d H:i:s');
-		$username = $_SESSION['username'];
-		$content = sanitise($_POST['userpost'], $connection);
-		$query = "INSERT INTO posts (post_id, username,content,timestamp) VALUES ('', '$username','$content','$timestamp');";
-		$result = mysqli_query($connection, $query);
-		if ($result)
-		{
-			// show a successful signup message:
-			$user_message = "Message posted!";
+			if(isset($_POST['userPrivate']))
+			{
+				$pmusername = $_POST['userPrivate'];
+				$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+				if (!$connection)
+				{
+					die("Connection failed: " . $mysqli_connect_error);
+				}
+				$timestamp = date('Y/m/d H:i:s');
+				$username = $_SESSION['username'];
+				$content = sanitise($_POST['userpost'], $connection);
+				$pm_query = "INSERT INTO privateMessages (pm_id, username, pmUsername, content, timestamp) VALUES ('', '$username','$pmusername','$content','$timestamp')";
+				$pm_result = mysqli_query($connection, $pm_query);
+				if ($pm_result)
+				{
+					// show a successful signup message:
+					$user_message = "Private message posted!";
+				}
+				else
+				{
+					// show unsuccessfull message
+					$user_message = "Private message failed to post";
+				}
+			}
 		}
 		else
 		{
-			// show unsuccessfull message
-			$user_message = "Message failed to post";
+			//POSTING MESSAGES
+			if(isset($_POST['userpost']))
+			{
+				$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+				if (!$connection)
+				{
+					die("Connection failed: " . $mysqli_connect_error);
+				}
+				$timestamp = date('Y/m/d H:i:s');
+				$username = $_SESSION['username'];
+				$content = sanitise($_POST['userpost'], $connection);
+				$query = "INSERT INTO posts (post_id, username,content,timestamp) VALUES ('', '$username','$content','$timestamp');";
+				$result = mysqli_query($connection, $query);
+				if ($result)
+				{
+					// show a successful signup message:
+					$user_message = "Message posted!";
+				}
+				else
+				{
+					// show unsuccessfull message
+					$user_message = "Message failed to post";
+				}
+			}
 		}
-	}
+
 	// LIKING POSTS
 	if(isset($_POST['like']))
 	{
@@ -126,14 +159,34 @@ else{
 
 	}
 }
-echo <<<_END
-      <form id='post-form' method='post'>
-      <textarea name='userpost' style='resize:none' cols='50' rows='5' maxlength='140' none placeholder='Type here to post a message...' required></textarea><br>
-      <input id='submit-button' type='submit' value='Post Message'>
-			</form>
-_END;
+    echo  "<form id='post-form' method='post'>";
+    echo  "<textarea name='userpost' style='resize:none' cols='50' rows='5' maxlength='140' none placeholder='Type here to post a message...' required></textarea><br>";
+    echo  "<input id='submit-button' style='float:left;' type='submit' value='Post Message'>";
 
-echo "<p style='margin-left: 5px; color: red; font-weight: bold;'>".$user_message."</p>";
+			if ($_SESSION['username'] == "admin")
+			{
+				echo "<input type='checkbox'style='float: left; margin-top: 6px;' name='checkPM' value='privateMsg'><p style='float: left; margin-top: 3px;'>PM?<p>";
+				echo "<textarea id='userPrivateTextBox'name='userPrivate' style='resize:none;margin-left: 5px;float: left;'cols='20' rows='1' maxlength='20' none placeholder='Type username...'></textarea><br>";
+			}
+			echo "</form>";
+
+echo "<br><p style='margin-left: 5px; color: red; font-weight: bold;'>".$user_message."</p>";
+// RETRIEVE ALL USER MESSAGES
+$list_username = $_SESSION['username'];
+$list_pm = "SELECT username,content,timestamp FROM privateMessages WHERE pmUsername = '$list_username'";
+$list_pm_result = mysqli_query($connection, $list_pm);
+$list_pm_n = mysqli_num_rows($list_pm_result);
+if ($list_pm_n > 0)
+{
+	for ($i=0; $i<$list_pm_n; $i++)
+	{
+		$list_pm_row = mysqli_fetch_assoc($list_pm_result);
+		$list_pm_username = $list_pm_row['username'];
+		$list_pm_content = $list_pm_row['content'];
+		$list_pm_timestamp = $list_pm_row['timestamp'];
+		echo "<p style='margin-left: 5px; color: green; font-weight: bold;'>"."Message from: ".$list_pm_username." on $list_pm_timestamp"."<br>"."'".$list_pm_content."'"."</p>";
+	}
+}
 
 // RETRIEVE ALL POSTS
 $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
