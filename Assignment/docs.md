@@ -27,11 +27,10 @@ User can create your own account by visiting **/sign_up.php** and providing user
 ## Password Hashing
 All `passwords` are **hashed** and checked using PHP's `password_hash()` and `password_verify()` functions that uses bcrypt algorithm.
 
-
 ## Set Profile
-User can setup a new profile by visiting ***/set_profile.php** if he/she haven't done before. Client-side and server-side validates if provided inputs are valid. 
+User can setup a new profile by visiting **/set_profile.php** if he/she haven't done before. Client-side and server-side validates if provided inputs are valid. 
 **First Name** is validated by ensuring that the input contains **only alphabetic letters**, and **is within 1-16 characters**.
-**Lat Name** is validated the same way as **First Name**.
+**Last Name** is validated the same way as **First Name**.
 **Number of pets** is validated by ensuring that the input contains **only numeric values**, and **is within range of 0-5**.
 **Email** is validated by ensuring that the provided email address is valid using `FILTER_VALIDATE_EMAIL` filter.
 **Date of birth** is validated by checking if its in correct format **YYYY-MM-DD**.
