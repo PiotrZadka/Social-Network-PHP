@@ -1,7 +1,3 @@
-SETUP:
-...
+# 2CWK50: A Social Network Documentation
 
-
-DOCUMENTATION:
-...
-
+## Setup
