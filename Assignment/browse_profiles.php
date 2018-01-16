@@ -34,7 +34,7 @@ else
 			$lastname = $row['lastname'];
 			$hyperusername = $row['username'];
 
-			echo "<li id='browse-profiles-links'><a href='/assignment/show_profile.php?username=$hyperusername'>$firstname $lastname</a></li>";
+			echo "<li id='browse-profiles-links'><a href='/show_profile.php?username=$hyperusername'>$firstname $lastname</a></li>";
 		}
 		echo "</ul>";
 }
