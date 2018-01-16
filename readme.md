@@ -1,6 +1,7 @@
 ## Piotr Zadka 2CWK50: A Social Network Documentation
 
 ## Setup
+Make sure the entire content of folder **/Assignment** is copied into **htdocs** folder.
 To create database, visit **/create_data.php**. This pages will create the `skeleton` database and corresponding tables. For further access to the database and it's contents, visit **/phpmyadmin**.
 
 ## Sign in
@@ -37,6 +38,7 @@ User can setup a new profile by visiting **/set_profile.php** if he/she haven't 
 Profile information can be updated anytime. 
 
 ## View All Profiles
+It's **importaint** to make sure entire content of /assignment folder is copied into /htdocs folder otherwise this website might have viewing issues because hyperlinks used in this feature are linked to **localhost/browse_profiles.php**
 To view all set-up profiles, visit **/browse_profiles.php**. Click on a chosen username to view his/her profile. Only users with **set-up profiles** are visible. Back-end checks which user was clicked and generates new hyper-link that passes URL parameters to **/show_profile.php**.
 
 ## Visit specific Profile
