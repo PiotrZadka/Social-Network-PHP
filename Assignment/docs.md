@@ -49,7 +49,18 @@ Each user has an option to `Like` a post that he thinks is amusing.
 **Unfortunetly I had no success implementing the LIVE feed**. To retrieve new posts or update on the likes user need to **hit F5 button to refresh** entire page.
 
 ## Developer Tools
-The administrator account `admin` has access to extra features. One of them is to **mute** abusive users. To mute a user, please visit **/global_feed.php** and search for a post that appears to be abusive. Next to that post will be a visible button named `mute` which upon clicking disables ability to post new messages to global feed. Each muted user will be visible above input box. To unmute a user please click the `unmute` button next to the user you wish to unmute. Each muted user will be informed that is muted and can't post any messages to global feed.
+The administrator account `admin` has access to extra features. One of them is to **mute** abusive users. Each post in posts table has a row that refers to state of mute. If it's set to 1 means user is muted otherwise its 0 as default. To mute a user, please visit **/global_feed.php** and search for a post that appears to be abusive. Next to that post will be a visible button named `mute` which upon clicking disables ability to post new messages to global feed. Each muted user will be visible above input box. Next feature is to **unmute** abusive user. To `unmute` a user please click the `unmute` button next to the user you wish to unmute. Each muted user will be informed that is muted and can't post any messages to global feed.
+
+Admin also has ability to view **graphical summaries** of some user information. By visiting **/developer_tools.php** administrator can view two tables. First graph informs admin how many pets each user has. Each time a new user updates their profile the chart changes according to the values stored in the database table. Second graph informs the administrator about numbers of posts sent to the global feed by each user. It's being updated constantly and adds a new user to the graph if a new user posts a unique message. All graphs has been creates by using **Google Charts** scripts.
+
+Last Administrator-only tool is ability to send **targeted messages**. By visiting **/global_feed.php** administrator can compose a message that can be visible only to a specific user. Upon creating message, administrator has to check the checkbox if the message is private `PM?` and type a specific user username in the `textfield` below. Upon clicking Post Message instead posting the message to global feed the targeted message will only be displayed for specified user. 
+
+## Video Sharing
+By visiting **/libraries.php** future developers will find an informative page about **three choosen by creator video libraries** that could be considered to create video sharing feature. The page contains brief information, **three** video libraries which can be visited by clicking specified button. Therefore a **jQuery script** will open a page containing broad information regarding specific library containing pros and cons and an informative image and a code that is required to implement such feature. After, there is a performace information and compatibility. In the end of this page you can find summary and choosen library by the creator which is **Plyr**.
+
+
+
+
 
 
 
