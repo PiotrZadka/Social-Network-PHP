@@ -51,8 +51,8 @@ elseif (isset($_POST['username']))
 	// VALIDATION (see helper.php for the function definitions)
 	// now validate the data (both strings must be between 1 and 16 characters long):
 	// (reasons: we don't want empty credentials, and we used VARCHAR(16) in the database table)
-	$username_val = validateSignup("Username",$username);
-	$password_val = validateSignup("Password",$password);
+	$username_val = validateSignup("Username",$username,1,16);
+	$password_val = validateSignup("Password",$password,1,16);
 
 	//Crypting password
 	$hashPassword = password_hash($password,PASSWORD_DEFAULT);
@@ -110,7 +110,7 @@ echo <<<_END
   Please choose a username and password:<br>
   Username: <input type="text" id='cred_user' name="username" maxlength="16" value="$username" required> $username_val
   <br>
-  Password: <input type="text" id='cred_pass' name="password" maxlength="16" value="$password" required> $password_val
+  Password: <input type="password" id='cred_pass' name="password" maxlength="16" value="$password" required> $password_val
   <br>
   <input type="submit" id='submit_button' value="Register">
 </form>

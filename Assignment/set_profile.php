@@ -67,7 +67,7 @@ elseif (isset($_POST['firstname']))
 	$lastname_val = validateProfileString($lname,$lastname, 1, 16);
 	$pets_val = validateInt($pname,$pets, 0, 5);
 	$email_val = validateEmail($email);
-	$dob_val = validateDOB($dob);
+	$dob_val = validateDate($dob);
 	$errors = $firstname_val . $lastname_val . $pets_val . $email_val . $dob_val;
 
 

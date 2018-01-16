@@ -36,37 +36,50 @@ function validateString($field, $minlength, $maxlength)
 }
 
 // Validation for signup process
-function validateSignup($name,$field)
+function validateSignup($name,$field,$minlength,$maxlength)
 {
 	//validation to check if username already exists in db
-	if($name == "Username"){
-		require "credentials.php";
-		$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
-		$query = "SELECT username FROM members WHERE username = '$field' ";
-		$result = mysqli_query($connection, $query);
-		$exists = mysqli_num_rows($result);
-		if($exists == 1)
-		{
-			return $field." is not available!";
-		}
+	if (strlen($field)<$minlength)
+	{
+	// wasn't a valid length, return a help message:
+			return "Minimum length: " . $minlength;
+	}
+elseif (strlen($field)>$maxlength)
+	{
+	// wasn't a valid length, return a help message:
+			return "Maximum length: " . $maxlength;
 	}
 	else
 	{
-		if(!empty($field))
-		{
-			// if username doesn't include non alphanumeric
-			if(!preg_match('/[\'^£$%&*!()}{@#~?><>,|=_+¬-]/', $field))
+		if($name == "Username"){
+			require "credentials.php";
+			$connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+			$query = "SELECT username FROM members WHERE username = '$field' ";
+			$result = mysqli_query($connection, $query);
+			$exists = mysqli_num_rows($result);
+			if($exists == 1)
 			{
-			// if it's letter/number and not empty than allow
-	    return "";
-			}
-			else
-			{
-				return $name." can't contain any special characters!";
+				return $field." is not available!";
 			}
 		}
-		return $name. "can't be empty";
-	}
+		else
+		{
+			if(!empty($field))
+			{
+				// if username doesn't include non alphanumeric
+				if(!preg_match('/[\'^£$%&*!()}{@#~?><>,|=_+¬-]/', $field))
+				{
+				// if it's letter/number and not empty than allow
+		    return "";
+				}
+				else
+				{
+					return $name." can't contain any special characters!";
+				}
+			}
+			return $name. "can't be empty";
+		}
+}
 }
 
 // Validation for String in Profile Setup
@@ -124,13 +137,24 @@ function validateEmail($field)
 }
 
 // Validation for DOB in Profile Setup
-function validateDOB($field)
+function validateDate($field)
 {
 	if(empty($field))
 	{
 		return "Date is empty";
 	}
-	return "";
+	else
+	{
+		$date = DateTime::createFromFormat('Y-m-d', $field);
+		if (DateTime::getLastErrors()['warning_count'] > 0)
+		{
+	    return "Date is invalid";
+		}
+		else
+		{
+			return "";
+		}
+	}
 }
 
 // all other validation functions should follow the same rule:
