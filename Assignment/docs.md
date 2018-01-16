@@ -39,6 +39,18 @@ Profile information can be updated anytime.
 ## View All Profiles
 To view all set-up profiles, visit **/browse_profiles.php**. Click on a chosen username to view his/her profile. Only users with **set-up profiles** are visible. Back-end checks which user was clicked and generates new hyper-link that passes URL parameters to **/show_profile.php**.
 
+## Visit specific Profile
+To visit specific profile please use **/show_profile.php?username=NAME** replacing `NAME` with chosen username.
+
+## Global Feed
+Users can visit global feed by visiting **/global_feed.php***. Global feed retrieves all posts from the database that were created by active users. Users can compose a **140 characters long** message and post it to global feed which is **visible to everyone**.  
+Upon clicking `Post Message` user will recieve a notification either the post was **Successful** or **not**. 
+Each user has an option to `Like` a post that he thinks is amusing.   
+**Unfortunetly I had no success implementing the LIVE feed**. To retrieve new posts or update on the likes user need to **hit F5 button to refresh** entire page.
+
+## Developer Tools
+The administrator account `admin` has access to extra features. One of them is to **mute** abusive users. To mute a user, please visit **/global_feed.php** and search for a post that appears to be abusive. Next to that post will be a visible button named `mute` which upon clicking disables ability to post new messages to global feed. Each muted user will be visible above input box. To unmute a user please click the `unmute` button next to the user you wish to unmute. Each muted user will be informed that is muted and can't post any messages to global feed.
+
 
 
 
